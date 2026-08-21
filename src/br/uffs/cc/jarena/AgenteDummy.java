@@ -36,6 +36,10 @@ public class AgenteDummy extends Agente
 	public void recebeuEnergia() {
 		// Invocado sempre que o agente recebe energia.
 	}
+
+	public void perdeuEnergia() {
+		// Invocado sempre que o agente perde energia.
+	}
 	
 	public void tomouDano(int energiaRestanteInimigo) {
 		// Invocado quando o agente está na mesma posição que um agente inimigo

@@ -31,6 +31,7 @@ public class Arena implements Runnable {
 		// Inicializamos as coisas da arena (agentes, energia, etc)
 		criaAmbiente();
 		adicionaPontosEnergia();
+		adicionaPontosAntiEnergia();
 		adicionaAgentes();
 
 		// Depois que tudo estiver configurado, arrumamos a tela
@@ -72,6 +73,18 @@ public class Arena implements Runnable {
 		for (i = 0; i < Constants.PONTO_ENERGIA_QUANTIDADE; i++) {
 			rand = Math.random();
 			adicionaEntidade(new PontoEnergia((int) (Constants.LARGURA_TELA * 0.95 * rand), j * i, Constants.PONTO_ENERGIA_SUPRIMENTO_INICIAL));
+		}
+	}
+
+	private void adicionaPontosAntiEnergia() {
+		double rand;
+		int i, j;
+		
+		j = Constants.ALTURA_TELA/Constants.PONTO_ANTI_ENERGIA_QUANTIDADE;
+
+		for (i = 0; i < Constants.PONTO_ANTI_ENERGIA_QUANTIDADE; i++) {
+			rand = Math.random();
+			adicionaEntidade(new AntiEnergia((int) (Constants.LARGURA_TELA * 0.95 * rand), j * i, Constants.PONTO_ANTI_ENERGIA_SUPRIMENTO_INICIAL));
 		}
 	}
 
