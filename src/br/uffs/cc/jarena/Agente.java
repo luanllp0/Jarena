@@ -38,6 +38,13 @@ abstract public class Agente extends Entidade
 	 * cada turno.
 	 */
 	public abstract void recebeuEnergia();
+
+	/**
+	 * Invocado pela arena sempre que o agente perder energia de algum ponto de Anti-energia.
+	 * Enquanto agente estiver no alcance do ponto de Anti-energia, esse método será invocado a
+	 * cada turno.
+	 */
+	public abstract void perdeuEnergia();
 	
 	/**
 	 * Invocado pela arena sempre que o agente estiver ocupando a mesma posição que um outro
@@ -440,6 +447,20 @@ abstract public class Agente extends Entidade
 			tomouDano(inimigo.getEnergia());
 			super.getArena().getDesenhista().agenteTomouDano(this);
 			
+		} catch (Exception e) {
+			morrePorErroExcecao(e);
+		}
+		protegeInformacoes(false);
+	}
+
+	/**
+	 * Notifica que o agente perdeu energia por fonte não-adversária (ex.: AntiEnergia).
+	 */
+	public final void sinalizaPerdeuEnergia() {
+		protegeInformacoes(true);
+		try {
+			perdeuEnergia();
+			super.getArena().getDesenhista().agenteTomouDano(this);
 		} catch (Exception e) {
 			morrePorErroExcecao(e);
 		}

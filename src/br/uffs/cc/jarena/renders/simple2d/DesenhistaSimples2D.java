@@ -47,6 +47,7 @@ public class DesenhistaSimples2D extends JFrame implements Desenhista
 	private int spriteAtual;
 	
 	private Color corAuraEnergia 	= new Color(0f, 0f, 1f, 0.3f);
+	private Color corAuraPerdeuEnergia = new Color(1f, 0f, 0f, 0.35f);
 	private Color corAuraCombate 	= new Color(1f, 0f, 0f, 0.5f);
 	private Color corAuraRecebeuMsg = new Color(0f, 1f, 0f, 0.5f);
 	private Color corAuraEnviouMsg  = new Color(1f, 0f, 1f, 0.5f);
@@ -124,6 +125,9 @@ public class DesenhistaSimples2D extends JFrame implements Desenhista
 			
 		} else if(e instanceof PontoEnergia) {
 			ret = tipo == LARGURA ? 50 : 60;
+
+		} else if(e instanceof AntiEnergia) {
+			ret = tipo == LARGURA ? 50 : 60;
 		}
 		
 		return ret;
@@ -136,6 +140,9 @@ public class DesenhistaSimples2D extends JFrame implements Desenhista
 			if(e instanceof Agente) {
 				desenhaAgente(g, (Agente) e);
 				
+			} else if(e instanceof AntiEnergia) {
+				desenhaAntiEnergia(g, (AntiEnergia) e);
+			
 			} else if(e instanceof PontoEnergia) {
 				desenhaPontoEnergia(g, (PontoEnergia) e);
 			}
@@ -258,6 +265,7 @@ public class DesenhistaSimples2D extends JFrame implements Desenhista
 		long tempoAgora = System.currentTimeMillis();
 
 		desenhaAuraEmbaixoPes(g, a, "energia", 		4, 15, corAuraEnergia);
+		desenhaAuraEmbaixoPes(g, a, "perdeuEnergia", 	4, 15, corAuraPerdeuEnergia);
 		desenhaAuraEmbaixoPes(g, a, "recebeuMsg", 	4, 20, corAuraRecebeuMsg);
 		desenhaAuraEmbaixoPes(g, a, "enviouMsg", 	4, 20, corAuraEnviouMsg);
 		
@@ -367,6 +375,27 @@ public class DesenhistaSimples2D extends JFrame implements Desenhista
                        6);
 		}
 	}
+
+	private void desenhaAntiEnergia(Graphics g, AntiEnergia p) {
+		g.drawImage(imgPontosEnergia,
+				p.getX(),
+				p.getY() + offsetY,
+				p.getX() + 50,
+				p.getY() + 60 + offsetY,
+				5,
+				5,
+				50,
+				55,
+				null);
+
+		if(arena.isDebug()) {
+			g.setColor(Color.MAGENTA);
+			g.fillRect(p.getX() + getTamanho(p, LARGURA)/2 - 3,
+				       p.getY() + getTamanho(p, ALTURA)/2 - 3 + offsetY,
+				       6,
+				       6);
+		}
+	}
 	
 	
 	//////////////////////
@@ -378,7 +407,7 @@ public class DesenhistaSimples2D extends JFrame implements Desenhista
 	}
 	
 	public void agenteTomouDano(Agente a) {
-		
+		ativaAnimacao("perdeuEnergia", a, 500);
 	}
 
 	public void agenteBateuAlguem(Agente batendo, Agente apanhando) {
