@@ -77,16 +77,65 @@ public class Arena implements Runnable {
 	}
 
 	private void adicionaPontosAntiEnergia() {
-		double rand;
-		int i, j;
-		
-		j = Constants.ALTURA_TELA/Constants.PONTO_ANTI_ENERGIA_QUANTIDADE;
+		int maxX = Constants.LARGURA_MAPA;
+		int maxY = Constants.ALTURA_MAPA;
+		int faixaX = maxX / 4;
+		int faixaY = maxY / 4;
+		int centroMinX = faixaX;
+		int centroMaxX = maxX - faixaX;
+		int centroMinY = faixaY;
+		int centroMaxY = maxY - faixaY;
+		// definição dos limites do mapa, as faixas dos cantos e a região central
 
-		for (i = 0; i < Constants.PONTO_ANTI_ENERGIA_QUANTIDADE; i++) {
-			rand = Math.random();
-			adicionaEntidade(new AntiEnergia((int) (Constants.LARGURA_TELA * 0.95 * rand), j * i, Constants.PONTO_ANTI_ENERGIA_SUPRIMENTO_INICIAL));
+		int[][] cantos = {
+			{0, 0}, {maxX, 0}, {0, maxY}, {maxX, maxY}
+		};
+
+		for (int i = 0; i < Constants.PONTO_ANTI_ENERGIA_QUANTIDADE; i++) {
+			int x;
+			int y;
+
+			if (i < Constants.PONTO_ANTI_ENERGIA_FIXOS) {
+				switch (i) {
+					case 0:
+						x = coordenadaAleatoria(0, faixaX);
+						y = coordenadaAleatoria(0, faixaY);
+						break;
+					case 1:
+						x = coordenadaAleatoria(centroMaxX, maxX);
+						y = coordenadaAleatoria(0, faixaY);
+						break;
+					case 2:
+						x = coordenadaAleatoria(0, faixaX);
+						y = coordenadaAleatoria(centroMaxY, maxY);
+						break;
+					default:
+						x = coordenadaAleatoria(centroMaxX, maxX);
+						y = coordenadaAleatoria(centroMaxY, maxY);
+						break;
+				}
+				// associa os quatro primeiros pontos a um canto e sorteia sua posição inicial na região correspondente
+			} else {
+				x = coordenadaAleatoria(centroMinX, centroMaxX);
+				y = coordenadaAleatoria(centroMinY, centroMaxY);
+			}
+			// sorteia a posição dos dois pontos móveis dentro da região central.
+
+			AntiEnergia ponto = new AntiEnergia(x, y, Constants.PONTO_ANTI_ENERGIA_SUPRIMENTO_INICIAL);
+
+			if (i < Constants.PONTO_ANTI_ENERGIA_FIXOS) {
+				ponto.defineDestino(cantos[i][0], cantos[i][1]);
+			}
+			// define o destino de canto para os quatro pontos fixos.
+
+			adicionaEntidade(ponto);
 		}
 	}
+
+	private int coordenadaAleatoria(int minimo, int maximo) {
+		return minimo + (int) (Math.random() * (maximo - minimo + 1));
+	}
+	// método auxiliar que sorteia uma coordenada entre dois limites.
 
 	public Vector<Entidade> getEntidades() {
 		return this.entidades;

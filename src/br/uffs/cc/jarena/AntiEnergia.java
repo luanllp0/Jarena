@@ -13,6 +13,10 @@ public class AntiEnergia extends Entidade
 	private int velocidadeY;
 	private boolean andando;
 	private long horaProximoEstado;
+	private boolean movimentoAleatorio;
+	private boolean indoParaDestino;
+	private int destinoX;
+	private int destinoY;
 	
 	public AntiEnergia(Integer x, Integer y, Integer energia) {
 		super(x, y, energia);
@@ -21,6 +25,8 @@ public class AntiEnergia extends Entidade
 		velocidadeY 		= (int)(Math.random() * Constants.PONTO_ANTI_ENERGIA_VELOCIDADE) * (Math.random() < 0.5 ? -1 : 1);
 		andando 			= false;
 		horaProximoEstado 	= 0;
+		movimentoAleatorio	= true;
+		// começa com movimento aleatório
 	}
 	
 	public void update() {
@@ -36,7 +42,9 @@ public class AntiEnergia extends Entidade
 			}
 		}
 
-		if(Constants.PONTO_ANTI_ENERGIA_MOVEL) {
+		if (indoParaDestino) {
+			movimentaAteDestino();
+		} else if (movimentoAleatorio && Constants.PONTO_ANTI_ENERGIA_MOVEL) {
 			movimenta();
 		}
 	}
@@ -56,6 +64,28 @@ public class AntiEnergia extends Entidade
 			horaProximoEstado = tempoAgora + (andando ? Constants.PONTO_ANTI_ENERGIA_TEMPO_ANDANDO : Constants.PONTO_ANTI_ENERGIA_TEMPO_DESCANSO);
 		}
 	}
+
+	private void movimentaAteDestino() {
+		int distanciaX = destinoX - getX();
+		int distanciaY = destinoY - getY();
+		int passoX = Math.min(Math.abs(distanciaX), Constants.PONTO_ANTI_ENERGIA_VELOCIDADE_DESTINO);
+		int passoY = Math.min(Math.abs(distanciaY), Constants.PONTO_ANTI_ENERGIA_VELOCIDADE_DESTINO);
+
+		if (distanciaX < 0) {
+			passoX = -passoX;
+		}
+		if (distanciaY < 0) {
+			passoY = -passoY;
+		}
+
+		alteraX(passoX);
+		alteraY(passoY);
+
+		if (getX() == destinoX && getY() == destinoY) {
+			indoParaDestino = false;
+		}
+	}
+	// move ponto até o destino
 	
 	private void evitaSairTela() {
 		boolean movendoDireita 	= velocidadeX > 0;
@@ -88,6 +118,14 @@ public class AntiEnergia extends Entidade
 
 		System.out.println("AntiEnergia"+getId()+" tirando vida de " + a);
 	}
+
+	public void defineDestino(int x, int y) {
+		destinoX = x;
+		destinoY = y;
+		movimentoAleatorio = false;
+		indoParaDestino = true;
+	}
+	// desativa movimento aleatorio e define qual o destino do ponto
 	
 	public String toString() {
 		return "[AntiEnergia" + getId()+"] energia="+getEnergia()+", x="+getX()+", y="+getY();

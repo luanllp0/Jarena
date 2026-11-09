@@ -49,7 +49,7 @@ public class Constants
 	public static final int PONTO_ENERGIA_REGENERA_TURNO			= 0;
 	public static final int PONTO_ENERGIA_ENTREGA_TURNO				= ENTIDADE_ENERGIA_GASTO_VIVER + ENTIDADE_ENERGIA_GASTO_ANDAR + 2;
 	public static final double PONTO_ENERGIA_AREA					= 40;
-	public static final int PONTO_ENERGIA_QUANTIDADE				= 5;
+	public static final int PONTO_ENERGIA_QUANTIDADE				= 6;
 	public static final boolean PONTO_ENERGIA_MOVEL					= true;
 	public static final int PONTO_ENERGIA_VELOCIDADE				= ENTIDADE_VELOCIDADE + 1;
 	public static final int PONTO_ENERGIA_TEMPO_DESCANSO			= 3000; // em milisegundos
@@ -60,9 +60,11 @@ public class Constants
 	public static final int PONTO_ANTI_ENERGIA_REGENERA_TURNO			= 0;
 	public static final int PONTO_ANTI_ENERGIA_ENTREGA_TURNO			= ENTIDADE_ENERGIA_GASTO_VIVER + ENTIDADE_ENERGIA_GASTO_ANDAR + 2; // (1+2+2 = 5)
 	public static final double PONTO_ANTI_ENERGIA_AREA					= 40;
-	public static final int PONTO_ANTI_ENERGIA_QUANTIDADE				= 5;
+	public static final int PONTO_ANTI_ENERGIA_QUANTIDADE				= 6; // 6 pontos no total
+	public static final int PONTO_ANTI_ENERGIA_FIXOS 					= 4; // 4 vão para os 4 cantos
 	public static final boolean PONTO_ANTI_ENERGIA_MOVEL				= true;
 	public static final int PONTO_ANTI_ENERGIA_VELOCIDADE				= ENTIDADE_VELOCIDADE + 1;
+	public static final int PONTO_ANTI_ENERGIA_VELOCIDADE_DESTINO		= 3; // velocidade até o destino (canto)
 	public static final int PONTO_ANTI_ENERGIA_TEMPO_DESCANSO			= 3000; // em milisegundos
 	public static final int PONTO_ANTI_ENERGIA_TEMPO_ANDANDO			= 3000; // em milisegundos
 }
